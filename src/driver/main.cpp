@@ -60,8 +60,8 @@ void callback(const sensor_msgs::ImageConstPtr &imgPtr){
 
     out_msg.image    =  image;
     pub.publish(out_msg.toImageMsg());
-    //out_msg.image    =  DiffImage-image;
-    //pub2.publish(out_msg.toImageMsg());
+    out_msg.image    =  image-DiffImage;
+    pub2.publish(out_msg.toImageMsg());
     //std::cout<<"global diff: "<< cv::sum(out_msg.image)/(out_msg.image.rows*out_msg.image.cols)<<std::endl;
 
 }
@@ -74,7 +74,12 @@ void camerainfoCb(const sensor_msgs::CameraInfoConstPtr&  info){
 int main(int argc, char **argv)
 {
     if(argc<4){
-        std::cout<<"_sub, _pub, _calib"<<std::endl;
+        std::cout<<"This ROS NODE is intended to use in realtime with a /depth/image_raw topic"<<std::endl;
+        std::cout<<"The node will subscribe to a DEPTH IMAGE RAW topic and to a CAMERA INFO of such camera and will republish (using image transport) the undistorted data"<<std::endl;
+        std::cout<<"Usage:"<<std::endl;
+        std::cout<<"rosrun easydepthcalibration driver_node _sub:=/camera_topic _pub:=/calibrated _calib:=calibration_filename.ext"<<std::endl;
+        std::cout<<"Note:"<<std::endl;
+        std::cout<<"You don't have to provide the full topic name, </camera_topic> means that the node will subscribe to both /camera_topic/depth/image_raw and /camera_topic/depth/camera_info"<<std::endl;
         exit(1);
     }
     ros::init(argc, argv, "xtionDriver",ros::init_options::AnonymousName);

@@ -15,7 +15,8 @@ int main(int argc, char **argv)
 {
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
     if(argc<3){
-        std::cout<<"usage:"<<std::endl<<"offlineCalibration <input log filename> <output calibration filename>"<<std::endl;
+        std::cout<<"This node is intend to use offline"<<std::endl<<"provide a logfile (produced with the dumpernode) and the output calibration file you want"<<std::endl;
+        std::cout<<"example:"<<std::endl<<"offlineCalibration <input log filename> <output calibration filename>"<<std::endl;
         return 0;
     }
     std::fstream log;

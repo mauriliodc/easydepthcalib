@@ -55,24 +55,27 @@ void camerainfoCb(const sensor_msgs::CameraInfoConstPtr&  info){
     outfile<< imageTopic<< " ";
     outfile<< info->height<< " "<<info->width<<" ";
     outfile<<    info->K.at(0)<<" "<< info->K.at(1)<<" "<< info->K.at(2)<<" "
-                << info->K.at(3)<<" "<< info->K.at(4)<<" "<< info->K.at(5)<<" "
-                << info->K.at(6)<<" "<< info->K.at(7)<<" "<< info->K.at(8)<<std::endl;
+              << info->K.at(3)<<" "<< info->K.at(4)<<" "<< info->K.at(5)<<" "
+              << info->K.at(6)<<" "<< info->K.at(7)<<" "<< info->K.at(8)<<std::endl;
     gotCameraInfo=true;
 }
 
 void banner(){
-    std::cout<<"PARAMS: _imageTopic, cameraInfoTopic, logFile, outputDirectory"<<std::endl;
+    std::cout<<"DepthDumperNode is intented to use to dump the depth images and then launch on such data the calibration procedure"<<std::endl;
+    std::cout<<"It's basically a best practise to do like that to avoid all possible issues that could arise from running in realtime"<<std::endl;
+    std::cout<<"Usage:"<<std::endl;
+    std::cout<<"rosrun easydepthcalibration depthdumpernode _imageTopic:=/camera/depth/image_raw _cameraInfoTopic:=/camera/depth/camera_info _logFile:=calibation_file.mal _outputDirectory_=distortedImages"<<std::endl;
 }
 
 int main(int argc, char** argv)
 {
     if(argc<2){
-	banner();
-	exit(1);
+        banner();
+        exit(1);
     }
 
     ros::init(argc, argv, "easyDepthCalibDumper");
-    ros::NodeHandle nh_("~");    
+    ros::NodeHandle nh_("~");
     nh_.param("imageTopic",imageTopic,std::string("/camera/depth/image_raw"));
     nh_.param("cameraInfoTopic",cameraInfoTopic,std::string("/camera/depth/camera_info"));
     nh_.param("logFile",logFile,std::string("out.mal"));

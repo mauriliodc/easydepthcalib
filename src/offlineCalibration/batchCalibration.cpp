@@ -32,10 +32,14 @@ int main(int argc, char **argv)
 {
     int c;
     if(argc<=1){
+        printf("This node is intended to use to calibrate dumped data offline\n");
+        printf("You need:\n- an input directory with the distorted depth images\n- an output directory where the undistorted images will be saved\n- the calibration file for the sensor used\n");
         printf("Usage:\n");
         printf("--input  -i string inputdirectory\n");
         printf("--output -o string outputdirectory\n");
         printf("--calib  -c string calibration file\n");
+        printf("Example:\n");
+        printf("./batchCalibration -i distortedDirectory -o undistortedDirectory -c depthcamera_calibration_file.mal");
         exit(1);
     }
     while (1)
