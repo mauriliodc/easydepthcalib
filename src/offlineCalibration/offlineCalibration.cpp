@@ -19,6 +19,15 @@ int main(int argc, char **argv)
         std::cout<<"example:"<<std::endl<<"offlineCalibration <input log filename> <output calibration filename>"<<std::endl;
         return 0;
     }
+    float c0,c1,c2,c3=0;
+    c0=1.0f;
+    if(argc==7){
+        c3=atof(argv[3]);
+        c2=atof(argv[4]);
+        c1=atof(argv[5]);
+        c0=atof(argv[6]);
+        std::cout<<"polynomial coeffs: d^3*"<<c3<<" + d^2*"<<c2<<" + d*"<<c1<<" + "<<c0<<std::endl;
+    }
     std::fstream log;
     log.open(argv[1]);
     string topic;
@@ -33,20 +42,20 @@ int main(int argc, char **argv)
     log >> k(0,2);
     log >> k(1,0);
     log >> k(1,1);
-    //k(1,1)*=-1;
     log >> k(1,2);
     log >> k(2,0);
     log >> k(2,1);
     log >> k(2,2);
-    //k.setIdentity();
-    std::cout<<k.inverse()<<std::endl;
     string filename;
-    calibrationMatrix c(640,480,7000,4,64);
+    //calibrationMatrix c(480,640,8000,4,8);
+    int rows =480;
+    int cols = 640;
+    calibrationMatrix c(rows,cols,8000,4,16);
+    //calibrationMatrix c(rows,cols,8000,4,64);
     while(!log.eof()){
         log>>filename;
         std::cout<< "opening "<<filename<<"\r"<<std::flush;
         cv::Mat data = cv::imread(filename,cv::IMREAD_ANYDEPTH);
-
         pointCloud p(data,k);
         //VOXELIZER
         pcl::PointCloud<pcl::PointXYZ>* pcl;
@@ -55,7 +64,7 @@ int main(int argc, char **argv)
         pointCloud p2(pcl);
         //CENTER SQUARE CLOUD
         pcl::PointCloud<pcl::PointXYZ>* square= new pcl::PointCloud<pcl::PointXYZ>();
-        calibration::computeCenterSquareCloud(data,k,square,100,100);
+        calibration::computeCenterSquareCloud(data,k,square,cols/10,rows/10,c0,c1,c2,c3); //100 100
         pointCloud p3(square);
         //CENTER PLANE
         Eigen::Vector4f centerModel;
@@ -111,9 +120,13 @@ int main(int argc, char **argv)
         delete pcl;
     }
     std::cout<<std::endl<<"saving "<<std::endl;
+    c.dumpSensorImages();
     c.serialize(argv[2]);
-    char nn[50];
+    char nn[500];
     std::cout<<"saving nn"<<std::endl;
     sprintf(nn,"NN_%s",argv[2]);
-    c.serializeNN(nn);
+    //c.serializeNN(nn);
+    //calibrationMatrix* cc = c.downsample(2,2);
+    //cc->serialize(argv[2]);
+
 }

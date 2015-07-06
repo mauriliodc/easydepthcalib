@@ -122,14 +122,15 @@ int main(int argc, char **argv)
                 for(int j=0;j<rows;j++){
                     p.x=i;
                     p.y=j;
-                    v=((float)image.at<ushort>(p));
-
-                    //                   if(multiplier.cell(p.y,p.x,v/10)!=1.0f)
-                    //                        std::cout << "was "<<v;
-                    v*=multiplier.cell(p.y,p.x,v);
+                    v=image.at<ushort>(p);
+                    if(v!=0){
+                        v=multiplier.cell(p.y,p.x,v)*v;
+                    } else{
+//                        std::cout<<"[v: "<<v<<std::endl;
+//                        std::cout<<"m: "<<multiplier.cell(p.y,p.x,v)<<std::endl;
+                    }
                     //                    if(multiplier.cell(p.y,p.x,v/10)!=1.0f)
                     //                        std::cout << " is "<<v<<std::endl;
-
                     image.at<ushort>(p)=(ushort)v;
                 }
             }

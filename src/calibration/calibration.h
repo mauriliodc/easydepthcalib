@@ -18,7 +18,7 @@ public:
     inline calibration(){}
     inline ~calibration(){}
     static void voxelize(pcl::PointCloud<pcl::PointXYZ>* cloud,pcl::PointCloud<pcl::PointXYZ>* outCloud, float voxelLeaf);
-    static void computeCenterSquareCloud(cv::Mat& depthImage,Eigen::Matrix3f k, pcl::PointCloud<pcl::PointXYZ>* outCloud, int width, int height);
+    static void computeCenterSquareCloud(cv::Mat& depthImage, Eigen::Matrix3f k, pcl::PointCloud<pcl::PointXYZ>* outCloud, int width, int height, float c0=1, float c1=0, float c2=0, float c3=0);
     static void computerCenterPlane(pcl::PointCloud<pcl::PointXYZ>* inCloud,Eigen::Vector4f& model, int distanceThreshold);
     static void computeNormals(pcl::PointCloud<pcl::PointXYZ>* inCloud, pcl::PointCloud<pcl::Normal>* normals, float searchRadius);
     static void pointrejection(Eigen::Vector3f* referenceNormal,float rejectionValue,pcl::PointCloud<pcl::PointXYZ>* inCloud,pcl::PointCloud<pcl::Normal>* normals,pcl::PointCloud<pcl::PointXYZ>* outCloud, std::vector<bool>* validIndeces );
