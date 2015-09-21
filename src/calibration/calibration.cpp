@@ -9,7 +9,7 @@ void calibration::voxelize(pcl::PointCloud<pcl::PointXYZ>* inCloud,pcl::PointClo
     sor.filter (*outCloud);
     //std::cout<<" OUT has "<<outCloud->size()<<std::endl;
 }
-void calibration::computeCenterSquareCloud(cv::Mat& depthImage,Eigen::Matrix3f k, pcl::PointCloud<pcl::PointXYZ>* outCloud, int width, int height){
+void calibration::computeCenterSquareCloud(cv::Mat& depthImage,Eigen::Matrix3f k, pcl::PointCloud<pcl::PointXYZ>* outCloud, int width, int height, float c0, float c1, float c2, float c3){
     outCloud->clear();
     int cols=depthImage.cols;
     int rows=depthImage.rows;
