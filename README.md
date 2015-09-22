@@ -12,7 +12,8 @@ Map acquired using a calibrated sensor (green is ground truth)
 Maurilio Di Cicco, Giorgio Grisetti, Luca Iocchi
 
 ###Paper:
-Non parametric Depth calibration @ 13th Intelligent Autonomous Systems (IAS) 2014
+Non parametric Depth calibration @ [13th Intelligent Autonomous Systems (IAS) 2014](http://link.springer.com/chapter/10.1007%2F978-3-319-08338-4_67)
+Non parametric Depth calibration @ [Robotics and Autonomous Systems Journal 2015](http://www.sciencedirect.com/science/article/pii/S0921889015001724)
 
 ###How to use:
 Full description available [here](http://www.mauriliodicicco.com/non-parametric-depth-calibration/)
