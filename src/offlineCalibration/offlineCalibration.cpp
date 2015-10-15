@@ -48,9 +48,9 @@ int main(int argc, char **argv)
     log >> k(2,2);
     string filename;
     //calibrationMatrix c(480,640,8000,4,8);
-    int rows =480;
-    int cols = 640;
-    calibrationMatrix c(rows,cols,8000,4,16);
+    int rows =240;
+    int cols = 320;
+    calibrationMatrix c(rows,cols,8000,2,16);
     //calibrationMatrix c(rows,cols,8000,4,64);
     while(!log.eof()){
         log>>filename;
