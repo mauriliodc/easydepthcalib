@@ -1,48 +1,75 @@
+#ifndef DRIVER_H
+#define DRIVER_H
+
+// Ros
 #include <ros/ros.h>
-#include "../shared/CalibrationMatrix.h"
-#include <ecl/threads/thread.hpp>
 #include <sensor_msgs/Image.h>
-#include <boost/signal.hpp>
-#include <boost/bind.hpp>
-#include <opencv2/opencv.hpp>
-#include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
-#include <omp.h>
-class xtionDriver{
+#include <image_transport/image_transport.h>
+
+// OpenCV
+#include <opencv2/opencv.hpp>
+
+// easydepthcalib
+#include "calibrationMatrix.h"
+
+
+class Driver
+{
+
+    // ================================
+    // ======== PUBLIC METHODS ========
+    // ================================
+
 public:
-    inline xtionDriver(ros::NodeHandle n) : multiplier("prova.txt"),
-                                            shutdown_required(false),
-                                            thread(&xtionDriver::spin, *this),
-                                            it(n),itDIFF(n){
 
-        std::cout<<"Freezing multiplier matrix...";
-        multiplier.syncToFloat();
-        std::cout<<"done!"<<std::endl;
-        std::cout.flush();
-        pub = it.advertise("/camera/malcom", 10);
-        pubDIFF = itDIFF.advertise("/camera/malcom_diff", 10);
-    }
+    Driver(ros::NodeHandle n);
 
-    inline ~xtionDriver(){}
+    ~Driver();
 
-    image_transport::ImageTransport it;
-    image_transport::ImageTransport itDIFF;
-    image_transport::Publisher pubDIFF;
-    image_transport::Publisher pub;
+protected:
 
-    ecl::Thread thread;
-    bool shutdown_required;
-    void callback(const sensor_msgs::ImageConstPtr &imgPtr);
-    void spin();
-    CalibrationMatrix  multiplier;
+    // ==================================
+    // ========= CALIB VARIABLES ========
+    // ==================================
 
-    private:
-    cv::Mat image;
-    cv::Mat original;
-    cv_bridge::CvImagePtr cvImageFromROS;
-    cv::Point p;
-    ushort v;
-    cv_bridge::CvImage out_msg;
-    cv_bridge::CvImage out_msg_DIFF;
+    calibrationMatrix* multiplier;
 
+    // ==================================
+    // ========= PARAM VARIABLES ========
+    // ==================================
+
+    std::string topic_sub;
+    std::string topic_pub;
+    std::string calib_lut;
+
+    std::string image_raw_topic_sub;
+    std::string camera_info_topic_sub;
+
+    std::string image_raw_topic_pub;
+    std::string camera_info_topic_pub;
+
+    // ==================================
+    // ========= ROS SUBSCRIBERS ========
+    // ==================================
+
+    image_transport::ImageTransport* image_transport;
+    image_transport::Subscriber sub_image_raw;
+    ros::Subscriber sub_camera_info;
+
+    // ==================================
+    // ======== ROS PUBLISHERS ==========
+    // ==================================
+
+    image_transport::Publisher pub_image_raw;
+    ros::Publisher pub_camera_info;
+
+    // ==================================
+    // ======== ROS CALLBACKS ===========
+    // ==================================
+
+    void imageCallback(const sensor_msgs::ImageConstPtr &imgPtr);
+    void cameraInfoCallback(const sensor_msgs::CameraInfoConstPtr &camera_info_ptr);
 };
+
+#endif //DRIVER_H
