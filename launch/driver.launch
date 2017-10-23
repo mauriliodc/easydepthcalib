@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
+  <node pkg="nodelet" type="nodelet" name="driver_nodelet" args="load easydepthcalib/driver_nodelet standalone_nodelet" output="screen">
+    <param name="topic_pub"		value="/camera/depth"/>
+    <param name="topic_sub"		value="/camera/depth_calibrated"/>
+    <param name="calib_lut"		value="/path/to/calib/lut/file"/>
+  </node>
+</launch>

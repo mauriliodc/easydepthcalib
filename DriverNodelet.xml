@@ -1,6 +1,0 @@
-<library path="lib/libDriverNodelet">
-  <class name="DriverNodelet" type="DriverNodelet" base_class_type="nodelet::Nodelet">
-  <description>
-    Nodelet for run with openni2 nodelets.
-  </descrption>
-</library>

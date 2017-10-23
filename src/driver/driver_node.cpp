@@ -14,7 +14,7 @@
 #include <opencv2/opencv.hpp>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
-#include "driver.h"
+#include <nodelet/loader.h>
 
 /*
 cv_bridge::CvImagePtr cvImageFromROS;
@@ -79,16 +79,33 @@ int main(int argc, char **argv)
         std::cout<<"This ROS NODE is intended to use in realtime with a /depth/image_raw topic"<<std::endl;
         std::cout<<"The node will subscribe to a DEPTH IMAGE RAW topic and to a CAMERA INFO of such camera and will republish (using image transport) the undistorted data"<<std::endl;
         std::cout<<"Usage:"<<std::endl;
-        std::cout<<"rosrun easydepthcalibration driver_node _sub:=/camera_topic _pub:=/calibrated _calib:=calibration_filename.ext"<<std::endl;
+        std::cout<<"rosrun easydepthcalibration driver_node topic_sub:=/camera/depth topic_pub:=/camera/depth_calib calib_lut:=calibration_filename.ext"<<std::endl;
         std::cout<<"Note:"<<std::endl;
-        std::cout<<"You don't have to provide the full topic name, </camera_topic> means that the node will subscribe to both /camera_topic/depth/image_raw and /camera_topic/depth/camera_info"<<std::endl;
+        std::cout<<"You don't have to provide the full topic name, </camera_topic> means that the node will subscribe to both /camera_topic/image_raw and /camera_topic/camera_info"<<std::endl;
         exit(1);
     }
-    ros::init(argc, argv, "xtionDriver",ros::init_options::AnonymousName);
-    ros::NodeHandle n("~");
-    Driver driver(n);
+//    ros::init(argc, argv, "xtionDriver");
+//    ros::NodeHandle n("~");
+    // Get params
+    /*
+    string topic_sub, topic_pub, calib_lut;
+    n.param<std::string>("topic_sub", topic_sub, "duopa");
+    n.param<std::string>("topic_pub", topic_pub);
+    n.param<std::string>("calib_lut", calib_lut);
+    cout << topic_sub << endl;
+    cout << topic_pub << endl;
+    cout << calib_lut << endl;
+*/
+    ros::init(argc, argv, "easydepthcalib_driver");
 
-/*
+    nodelet::Loader nodelet;
+    nodelet::M_string remap(ros::names::getRemappings());
+    nodelet::V_string nargv;
+    std::string nodelet_name = ros::this_node::getName();
+    nodelet.load(nodelet_name, "easydepthcalib/driver_nodelet", remap, nargv);
+    ros::spin();
+
+    /*
     n.param("sub", _sub, string("/camera/depth/image_raw"));
     n.param("pub", _pub, string("/cameraCalib/depth"));
     n.param("calib", _calib, string("calib.mal"));
