@@ -1,0 +1,11 @@
+<library path="lib/libdriver_nodelet">
+
+    <class name="easydepthcalib/driver_nodelet"
+           type="easydepthcalib::DriverNodelet"
+           base_class_type="nodelet::Nodelet">
+        <description>
+            Online driver nodelet.
+        </description>
+    </class>
+
+</library>
