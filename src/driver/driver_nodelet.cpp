@@ -1,6 +1,10 @@
 #include "driver_nodelet.h"
 #include <pluginlib/class_list_macros.h>
 
+#define RESET   "\033[0m"
+#define BOLDRED     "\033[1m\033[31m"      /* Bold Red */
+#define BOLDYELLOW  "\033[1m\033[33m"      /* Bold Yellow */
+
 using namespace std;
 using namespace ros;
 
@@ -27,7 +31,18 @@ namespace easydepthcalib
         // info
         if (topic_sub == "" || topic_pub == "" || calib_lut == "")
         {
-            cout << "Please provide topic_sub, topic_pub and calub_lut params." << endl;
+            cout << BOLDYELLOW << endl;
+            cout << "======================================================" << endl;
+            cout << "=========== EASYDEPTHCALIB ONLINE DRIVER =============" << endl;
+            cout << "======================================================" << endl << endl << RESET;
+
+            cout << "This is the calibration driver and it's intended to use in realtime, params:" << endl;
+            cout << BOLDYELLOW << "_topic_pub " << RESET << "-- input depth image namespace (eg. /camera/depth, where /camera/depth/image_raw" << endl
+                 << "and /camera/depth/camera_info will be subscribed automaticly." << endl;
+            cout << BOLDYELLOW << "_topic_sub " << RESET << "-- output calibrated depth image namespace (eg. /camera/depth_calib, where /camera/depth_calib/image_raw" << endl
+                 << "and /camera/depth_calib/camera_info will be published automaticly." << endl;
+            cout << BOLDYELLOW << "_calib_lut " << RESET << "-- calibration LUT file" << endl << endl;
+
             exit(-1);
         }
 

@@ -25,8 +25,14 @@ namespace easydepthcalib
 
     public:
 
+        /**
+         * @brief DriverNodelet     Default constructor.
+         */
         DriverNodelet();
 
+        /**
+         * @brief ~DriverNodelet    Default destructor.
+         */
         ~DriverNodelet();
 
     private:
